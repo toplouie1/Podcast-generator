@@ -2,18 +2,10 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 function App() {
-	const [isDarkMode, setIsDarkMode] = useState(false);
-
-	const toggleTheme = () => {
-		setIsDarkMode(!isDarkMode);
-	};
-
-	useEffect(() => {
+	const [isDarkMode, setIsDarkMode] = useState(() => {
 		const savedTheme = localStorage.getItem("theme");
-		if (savedTheme) {
-			setIsDarkMode(savedTheme === "dark");
-		}
-	}, []);
+		return savedTheme ? savedTheme === "dark" : false;
+	});
 
 	useEffect(() => {
 		if (isDarkMode) {
@@ -24,6 +16,10 @@ function App() {
 			localStorage.setItem("theme", "light");
 		}
 	}, [isDarkMode]);
+
+	const toggleTheme = () => {
+		setIsDarkMode((prevMode) => !prevMode);
+	};
 
 	return (
 		<div className="app-container">
@@ -52,37 +48,25 @@ function App() {
 							accept="audio/*"
 						/>
 					</div>
-					<button className="generate-button">Generate</button>{" "}
+					<button className="generate-button">Generate</button>
 				</div>
 
 				<div className="right-section">
 					<div className="generated-content">
-						<div>
-							<p>
-								<strong>Joe Rogan:</strong> Alright, folks, we’re live. Today,
-								I’ve got an incredible guest, Dr. Jane Carter. She’s an
-								evolutionary biologist who’s been studying the Amazon. Dr.
-								Carter, thanks for being here.
-							</p>
-							<p>
-								<strong>Dr. Jane Carter:</strong> Thanks for having me, Joe. I’m
-								excited to talk about it.
-							</p>
-							<p>
-								<strong>Joe:</strong> So, the Amazon. That’s got to be one of
-								the wildest places on Earth. What’s it like being there for
-								months at a time?
-							</p>
-							<p>
-								<strong>Dr. Carter:</strong> Its like stepping back in time. The
-								biodiversity is incredible, but it’s also very humbling. You’re
-								constantly reminded that humans are just one small part of this
-								massive web of life.
-							</p>
-						</div>
+						<p>
+							<strong>Joe Rogan:</strong> Alright, folks, we’re live. Today,
+							I’ve got an incredible guest, Dr. Jane Carter. She’s an
+							evolutionary biologist who’s been studying the Amazon. Dr. Carter,
+							thanks for being here.
+						</p>
+						<p>
+							<strong>Dr. Jane Carter:</strong> Thanks for having me, Joe. I’m
+							excited to talk about it.
+						</p>
 					</div>
 				</div>
 			</div>
+
 			<button className="theme-toggle" onClick={toggleTheme}>
 				{isDarkMode ? "🌙" : "🌞"}
 			</button>
