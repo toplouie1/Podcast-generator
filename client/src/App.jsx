@@ -59,10 +59,6 @@ function App() {
 							evolutionary biologist who’s been studying the Amazon. Dr. Carter,
 							thanks for being here.
 						</p>
-						<p>
-							<strong>Dr. Jane Carter:</strong> Thanks for having me, Joe. I’m
-							excited to talk about it.
-						</p>
 					</div>
 				</div>
 			</div>
