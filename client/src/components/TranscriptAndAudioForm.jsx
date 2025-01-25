@@ -30,7 +30,9 @@ export default function TranscriptAndAudioForm() {
 				}
 			);
 
-			setUploadStatus(`File uploaded successfully: ${response.data.filename}`);
+			setUploadStatus(
+				`File uploaded successfully: ${response.data.originalname}`
+			);
 		} catch (error) {
 			setUploadStatus(
 				`Error: ${error.response ? error.response.data : error.message}`

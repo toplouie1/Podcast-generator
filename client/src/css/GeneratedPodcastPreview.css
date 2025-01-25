@@ -6,17 +6,20 @@
 }
 
 .generated-content {
-	background: #f3e5f5;
+	background: linear-gradient(to right, #e0f7fa, #ffedcc);
 	padding: 10px;
-	border: 1px dashed #e6c4ed;
+	border: 1px dashed #3d3d3d;
 	border-radius: 15px;
 	max-height: 1000px;
 	min-height: 550px;
 	align-items: center;
-	color: #7b1fa2;
+	color: #1b1120;
 	font-style: italic;
 }
-
+.generated-content h2 {
+	border-bottom: 1px dashed grey;
+	padding-bottom: 5px;
+}
 body.dark .generated-content {
 	background: #424242;
 	color: #f3e5f5;

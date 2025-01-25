@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import PodcastGenerator from "./components/PodcastGenerator";
-import "./App.css";
-import "./index.css";
+import "./css/App.css";
 
 export default function App() {
 	const [isDarkMode, setIsDarkMode] = useState(() => {

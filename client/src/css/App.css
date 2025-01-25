@@ -1,21 +1,22 @@
 body {
 	margin: 0;
 	font-family: "Poppins", sans-serif;
-	background: linear-gradient(to right, #e0f7fa, #e1bee7);
+	background: linear-gradient(to right, #e0f7fa, #ffedcc);
 	align-items: center;
 	height: 100vh;
 	box-sizing: border-box;
-	transition: background-color 0.3s, color 0.3s;
+	transition: background-color 3s, color 3s;
 }
 
 body.dark {
 	background: #1c1c1c;
 	color: #4a148c;
+	transition: background-color 0.3s, color 0.1s;
 }
 
 .app-container {
 	padding: 14px;
-	animation: fadeIn 0.5s ease-in-out;
+	animation: fadeIn 0.6s cubic-bezier(0, 0, 0.33, 0.83), scaleUp 0.6s ease-in;
 }
 
 .app-title {
@@ -51,7 +52,7 @@ body.dark .theme-toggle {
 @keyframes fadeIn {
 	from {
 		opacity: 0;
-		transform: scale(0.95);
+		transform: scale(0.98);
 	}
 	to {
 		opacity: 1;
