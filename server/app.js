@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const audioRoutes = require("./routes/audioRoutes");
 const app = express();
-const port = 8000;
+
+require("dotenv").config();
 
 app.use(express.json());
 app.use(cors());
@@ -13,6 +14,8 @@ app.get("/", (req, res) => {
 	res.send("Podcast Generator Server is running!");
 });
 
-app.listen(port, () => {
-	console.log(`Server is running at http://localhost:${port}`);
+app.get("*", (req, res) => {
+	res.status(404).send("Page not found");
 });
+
+module.exports = app;
