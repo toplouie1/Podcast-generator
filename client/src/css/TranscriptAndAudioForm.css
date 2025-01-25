@@ -64,35 +64,51 @@ body.dark .form-control.transcript-input {
 	box-shadow: 0 0 10px rgba(106, 27, 154, 0.2);
 }
 
-.generate-button {
-	align-self: flex-start;
-	padding: 12px 25px;
-	background: #6a1b9a;
-	color: #fff;
-	font-size: 1rem;
-	font-weight: bold;
-	border: none;
-	cursor: pointer;
-	transition: background-color 0.3s ease, transform 0.2s ease;
-	width: 100%;
-}
-
 body.dark .generate-button {
 	background: #ff7043;
 	color: #ffffff;
 }
 
+.generate-button {
+	background: linear-gradient(135deg, #6a1b9a, #4a148c);
+	color: #ffffff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+
+	transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.generate-button::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 200%;
+	height: 100%;
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.2),
+		rgba(255, 255, 255, 0)
+	);
+	transform: skewX(-45deg);
+	transition: left 0.4s ease;
+}
+
+.generate-button:hover::before {
+	left: 100%;
+}
+
 .generate-button:hover {
-	background: #4a148c;
-	transform: scale(1.05);
+	background: linear-gradient(135deg, #4a148c, #6a1b9a);
+	color: #ffeb3b;
 }
 
-body.dark .generate-button:hover {
-	background: #8e24aa;
-}
-
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
 	.generate-button {
 		align-self: center;
 	}
-}
+} */
