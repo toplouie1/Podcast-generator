@@ -1,16 +1,23 @@
 .left-section {
 	display: flex;
 	flex-direction: column;
-	flex: 1;
-	gap: 30px;
 	justify-content: space-between;
-	height: 100%;
+	border: 0.3px dashed #888888;
+	padding: 15px;
+	border-radius: 8px;
+	height: auto;
 }
 
-.form-group {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+.left-section > *:first-child {
+	flex: 0 1 auto;
+}
+
+.left-section > *:nth-child(2) {
+	flex: 1 1 0;
+}
+
+.left-section > *:last-child {
+	flex: 0 1 auto;
 }
 
 .form-label {
@@ -20,24 +27,36 @@
 }
 
 body.dark .form-label {
-	color: #ce93d8;
+	color: #e0e0e0;
 }
 
 .form-control {
 	width: 100%;
-	padding: 15px;
-	font-size: 1rem;
-	border: 2px solid #ce93d8;
+	padding: 10px;
+	font-size: 0.9em;
+	border: 1px solid #ce93d8;
 	border-radius: 10px;
 	outline: none;
 	box-sizing: border-box;
 	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	margin-bottom: 0;
 }
 
 body.dark .form-control {
 	background-color: #424242;
 	border-color: #9e9e9e;
 	color: #fff;
+}
+
+body.dark .form-control.transcript-input {
+	height: 440px;
+	margin-top: 10px;
+	border-radius: none;
+}
+
+.form-control.transcript-input {
+	height: 440px;
+	margin-top: 10px;
 }
 
 .form-control:focus {
@@ -53,14 +72,14 @@ body.dark .form-control {
 	font-size: 1rem;
 	font-weight: bold;
 	border: none;
-	border-radius: 11px;
 	cursor: pointer;
 	transition: background-color 0.3s ease, transform 0.2s ease;
 	width: 100%;
 }
 
 body.dark .generate-button {
-	background: #9c27b0;
+	background: #ff7043;
+	color: #ffffff;
 }
 
 .generate-button:hover {
