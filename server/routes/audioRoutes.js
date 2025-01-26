@@ -3,6 +3,9 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const router = express.Router();
+const {
+	processAudioWithGemini,
+} = require("../services/processAudioForPodcast.");
 
 const uploadsDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadsDir)) {
@@ -20,15 +23,24 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/upload-audio", upload.single("audio"), (req, res) => {
+router.post("/upload-audio", upload.single("audio"), async (req, res) => {
 	if (!req.file) {
-		return res.status(400).json({ error: "No file uploaded" });
+		return res.status(400).json({ error: "No file Passed" });
 	}
-	return res.json({
-		message: "File uploaded successfully",
-		filename: req.file.filename,
-		originalname: req.file.originalname,
-	});
+	const { path: filePath, originalname, mimetype } = req.file;
+	try {
+		const generatedContent = await processAudioWithGemini(
+			filePath,
+			originalname,
+			mimetype
+		);
+		res.json({
+			message: "File processed successfully",
+			generatedContent,
+		});
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 });
 
 module.exports = router;
