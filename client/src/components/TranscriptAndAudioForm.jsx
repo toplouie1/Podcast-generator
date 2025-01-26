@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import "../css/TranscriptAndAudioForm.css";
 
-export default function TranscriptAndAudioForm() {
+export default function TranscriptAndAudioForm({ setGeneratedContent }) {
 	const [file, setFile] = useState(null);
 	const [uploadStatus, setUploadStatus] = useState("");
 
@@ -29,10 +29,9 @@ export default function TranscriptAndAudioForm() {
 					},
 				}
 			);
+			setGeneratedContent(response.data.generatedContent);
 
-			setUploadStatus(
-				`File uploaded successfully: ${response.data.originalname}`
-			);
+			setUploadStatus(`File uploaded successfully: ${response.data.message}`);
 		} catch (error) {
 			setUploadStatus(
 				`Error: ${error.response ? error.response.data : error.message}`

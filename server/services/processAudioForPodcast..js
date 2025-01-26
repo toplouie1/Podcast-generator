@@ -18,6 +18,7 @@ const model = genAI.getGenerativeModel({
 const supportedMimeTypes = [
 	"audio/wav",
 	"audio/mp3",
+	"audio/mpeg",
 	"audio/aiff",
 	"audio/aac",
 	"audio/ogg",
@@ -58,7 +59,32 @@ const processAudioWithGemini = async (filePath, originalname, mimeType) => {
 			},
 		]);
 
-		return result.response.text();
+		function formatTranscript(transcript) {
+			const formatted = transcript
+				.replace(/\*\*Speaker (\d+):\*\*/g, "Speaker $1:")
+				.replace(/\[inaudible\]/g, "[inaudible]")
+				.trim();
+
+			const segments = formatted.split(/(Speaker \d+:)/).filter(Boolean);
+			const transcriptArray = [];
+			let currentSpeaker = "";
+
+			segments.forEach((segment) => {
+				if (segment.startsWith("Speaker")) {
+					currentSpeaker = segment.trim();
+				} else {
+					transcriptArray.push({
+						speaker: currentSpeaker,
+						text: segment.trim(),
+					});
+				}
+			});
+
+			return transcriptArray;
+		}
+
+		const formattedTranscript = formatTranscript(result.response.text());
+		return formattedTranscript;
 	} catch (error) {
 		throw new Error("Gemini processing failed");
 	}
