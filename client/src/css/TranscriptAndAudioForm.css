@@ -49,13 +49,13 @@ body.dark .form-control {
 }
 
 body.dark .form-control.transcript-input {
-	height: 440px;
+	height: 450px;
 	margin-top: 10px;
 	border-radius: none;
 }
 
 .form-control.transcript-input {
-	height: 440px;
+	height: 450px;
 	margin-top: 10px;
 }
 
@@ -107,8 +107,10 @@ body.dark .generate-button {
 	color: #ffeb3b;
 }
 
-/* @media (max-width: 768px) {
-	.generate-button {
-		align-self: center;
-	}
-} */
+.upload-status {
+	color: #4a148c;
+}
+
+body.dark .upload-status {
+	color: #ff7043;
+}

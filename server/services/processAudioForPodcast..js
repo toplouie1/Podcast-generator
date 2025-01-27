@@ -39,6 +39,8 @@ const processAudioWithGemini = async (filePath, originalname, mimeType) => {
 			originalname,
 		});
 
+		console.log("---- uploadResult ----", uploadResult);
+
 		let file = await fileManager.getFile(uploadResult.file.name);
 		while (file.state === FileState.PROCESSING) {
 			process.stdout.write(".");
@@ -49,6 +51,7 @@ const processAudioWithGemini = async (filePath, originalname, mimeType) => {
 		if (file.state === FileState.FAILED) {
 			throw new Error("Audio processing failed.");
 		}
+		console.log(" ---- file ---- ", file.state);
 
 		const result = await model.generateContent([
 			"Create a detailed and accurate transcript of the uploaded audio file, distinguishing between two speakers.",
@@ -59,6 +62,7 @@ const processAudioWithGemini = async (filePath, originalname, mimeType) => {
 				},
 			},
 		]);
+		console.log("--- result ---- ", result);
 
 		const formattedTranscript = formatTranscript(result.response.text());
 		return formattedTranscript;

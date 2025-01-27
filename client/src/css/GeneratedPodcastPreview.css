@@ -4,6 +4,15 @@
 	flex: 1;
 	gap: 10px;
 }
+.generated-header {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px dashed grey;
+	padding-bottom: 5px;
+	font-family: Arial, sans-serif;
+	font-style: normal;
+	height: 45px;
+}
 
 .transcript-container {
 	font-family: Arial, sans-serif;
@@ -19,7 +28,11 @@
 	font-weight: bold;
 	min-width: 100px;
 	margin-right: 20px;
-	color: rgb(98 121 158);
+	color: #4a148c;
+}
+
+body.dark .speaker-label {
+	color: #ff7043;
 }
 
 .speaker-text {
@@ -36,12 +49,6 @@
 	align-items: center;
 	color: #1b1120;
 	font-style: italic;
-}
-.generated-content h2 {
-	border-bottom: 1px dashed grey;
-	padding-bottom: 5px;
-	font-family: Arial, sans-serif;
-	font-style: normal;
 }
 body.dark .generated-content {
 	background: #424242;

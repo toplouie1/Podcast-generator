@@ -38,6 +38,9 @@ router.post("/upload-audio", upload.single("audio"), async (req, res) => {
 			message: "File processed successfully",
 			generatedContent,
 		});
+		// once it gets generated , i want to start generating the audio
+		// but still send the transcript to client , so the web speech ai alerady has time to generate .
+		console.log("checking if this gets hit", generatedContent);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
