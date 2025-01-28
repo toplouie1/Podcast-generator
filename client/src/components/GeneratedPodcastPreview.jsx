@@ -2,6 +2,7 @@ import "../css/GeneratedPodcastPreview.css";
 
 const speakText = (text) => {
 	console.log("Starting speakText function...");
+	const utterance = new SpeechSynthesisUtterance(text);
 
 	if (!("speechSynthesis" in window)) {
 		console.error("Web Speech API is not supported in this browser.");
@@ -9,39 +10,21 @@ const speakText = (text) => {
 		return;
 	}
 
-	console.log("Web Speech API is supported in this browser.");
-	console.log("Text to be spoken:", text);
-
-	const utterance = new SpeechSynthesisUtterance(text);
-	console.log("Utterance created.");
-
-	utterance.pitch = 1;
-	utterance.rate = 1;
-	utterance.volume = 1;
-	console.log("Utterance properties set.");
+	utterance.pitch = 1.2;
+	utterance.rate = 1.2;
+	utterance.volume = 1.3;
 
 	const setVoice = () => {
+		const synth = window.speechSynthesis;
 		const voices = window.speechSynthesis.getVoices();
-		console.log("Available voices:", voices);
-
-		if (voices.length === 0) {
-			console.error("No voices available for speech synthesis.");
-			alert("No voices available for speech synthesis.");
-			return;
-		}
-
-		const voice = voices.find((v) => v.lang === "en-US") || voices[0];
+		// 23 38
+		const voice = voices[23] || voices[0];
+		// Eddy // Flo
 		if (voice) {
 			utterance.voice = voice;
 			console.log("Selected voice:", utterance.voice);
-		} else {
-			console.error("No matching voice found.");
-			alert("No matching voice found.");
-			return;
 		}
-
-		window.speechSynthesis.speak(utterance);
-		console.log("Speech synthesis started.");
+		synth.speak(utterance);
 	};
 
 	if (window.speechSynthesis.getVoices().length > 0) {
@@ -60,20 +43,13 @@ const speakText = (text) => {
 export default function GeneratedPodcastPreview({ generatedContent }) {
 	console.log("generatedContent first --->>>>> ", generatedContent);
 
-	const handlePlayPodcast = () => {
-		console.log("handle Play Podcast");
-		if (!generatedContent || generatedContent.length === 0) {
-			alert("No content available to play.");
-			return;
-		}
+	const handlePlayPodcast = (event) => {
+		event.preventDefault();
+		// const textToSpeak = generatedContent
+		// 	.map((entry) => (entry.text ? entry.text : ""))
+		// 	.join(" ");
 
-		const textToSpeak = generatedContent
-			.map((entry) => (entry.text ? entry.text : ""))
-			.join(" ");
-
-		console.log("Text to Speak:", textToSpeak);
-
-		speakText(textToSpeak);
+		speakText("cool never mind not cool");
 	};
 
 	return (
