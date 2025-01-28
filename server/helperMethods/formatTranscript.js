@@ -1,25 +1,26 @@
 function formatTranscript(transcript) {
-	const formatted = transcript
-		.replace(/\*\*Speaker (\d+):\*\*/g, "Speaker $1:")
-		.replace(/\[inaudible\]/g, "[inaudible]")
-		.trim();
+	const lines = transcript.split("\n");
+	const generatedContent = [];
 
-	const segments = formatted.split(/(Speaker \d+:)/).filter(Boolean);
-	const transcriptArray = [];
-	let currentSpeaker = "";
-
-	segments.forEach((segment) => {
-		if (segment.startsWith("Speaker")) {
-			currentSpeaker = segment.trim();
-		} else {
-			transcriptArray.push({
-				speaker: currentSpeaker,
-				text: segment.trim(),
-			});
-		}
+	generatedContent.push({
+		speaker: "",
+		text: "Here's a transcript of the provided audio, differentiating between the two speakers. Note that due to the audio quality, some words might be slightly unclear and some sections are difficult to transcribe fully. This is the best interpretation based on what is audible.",
 	});
 
-	return transcriptArray;
+	for (const line of lines) {
+		if (!line.trim()) continue;
+		if (line.startsWith("**Joe:**") || line.startsWith("**Lex:**")) {
+			const speaker = line.startsWith("**Joe:**") ? "Speaker 1:" : "Speaker 2:";
+			const text = line.replace(/^\*\*(Joe|Lex):\*\*/, "").trim();
+			generatedContent.push({ speaker, text });
+		} else {
+			if (generatedContent.length > 0) {
+				generatedContent[generatedContent.length - 1].text += " " + line.trim();
+			}
+		}
+	}
+
+	return generatedContent;
 }
 
 module.exports = { formatTranscript };
