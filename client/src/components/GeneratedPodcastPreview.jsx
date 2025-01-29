@@ -1,4 +1,9 @@
 import "../css/GeneratedPodcastPreview.css";
+import PlayArrowSharpIcon from "@mui/icons-material/PlayArrowSharp";
+import PauseSharpIcon from "@mui/icons-material/PauseSharp";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+
+let synth = window.speechSynthesis;
 
 const speakText = (text, voiceIndex) => {
 	console.log("Starting speakText function...");
@@ -15,8 +20,7 @@ const speakText = (text, voiceIndex) => {
 	utterance.volume = 1.3;
 
 	const setVoice = () => {
-		const synth = window.speechSynthesis;
-		const voices = window.speechSynthesis.getVoices();
+		const voices = synth.getVoices();
 		const voice = voices[voiceIndex];
 
 		if (voice) {
@@ -24,14 +28,13 @@ const speakText = (text, voiceIndex) => {
 			console.log("Selected voice:", utterance.voice);
 		}
 		synth.speak(utterance);
-		// synth.cancel();
 	};
 
-	if (window.speechSynthesis.getVoices().length > 0) {
+	if (synth.getVoices().length > 0) {
 		setVoice();
 	} else {
 		console.log("No voices available yet. Waiting for voices to load...");
-		window.speechSynthesis.onvoiceschanged = setVoice;
+		synth.onvoiceschanged = setVoice;
 	}
 
 	utterance.onerror = (event) => {
@@ -40,12 +43,34 @@ const speakText = (text, voiceIndex) => {
 	};
 };
 
+const handlePausePodcast = () => {
+	synth.pause();
+	console.log("Speech paused");
+};
+
+const handleResumePodcast = () => {
+	synth.resume();
+	console.log("Speech resumed");
+};
+
 export default function GeneratedPodcastPreview({ generatedContent }) {
+	generatedContent = [
+		{
+			speaker: "Speaker 1:",
+			text: "Hey good mornin this is joe",
+		},
+		{
+			speaker: "Speaker 2:",
+			text: "Hhahahah joe be quiet , you are to energetic , lets calm down",
+		},
+	];
+
 	const handlePlayPodcast = (event) => {
 		event.preventDefault();
 		const validEntries = generatedContent.filter(
 			(entry) => entry.speaker && entry.speaker.trim() !== ""
 		);
+		console.log("Valid entries to speak:", validEntries);
 
 		validEntries.forEach((entry, index) => {
 			const voiceIndex = index % 2 === 0 ? 23 : 38;
@@ -63,9 +88,9 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 			<div className="generated-content">
 				<div className="generated-header">
 					<h2>Podcast Generated</h2>
-					<button className="generate-button" onClick={handlePlayPodcast}>
-						Play Podcast
-					</button>
+					<PlayCircleOutlineIcon onClick={handlePlayPodcast} />
+					<PlayArrowSharpIcon onClick={handleResumePodcast} />
+					<PauseSharpIcon onClick={() => handlePausePodcast()} />
 				</div>
 				<div className="transcript-container">
 					{generatedContent.map((entry, index) => {
