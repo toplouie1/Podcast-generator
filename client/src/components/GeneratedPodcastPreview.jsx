@@ -1,6 +1,6 @@
 import "../css/GeneratedPodcastPreview.css";
 
-const speakText = (text) => {
+const speakText = (text, voiceIndex) => {
 	console.log("Starting speakText function...");
 	const utterance = new SpeechSynthesisUtterance(text);
 
@@ -17,14 +17,14 @@ const speakText = (text) => {
 	const setVoice = () => {
 		const synth = window.speechSynthesis;
 		const voices = window.speechSynthesis.getVoices();
-		// 23 38
-		const voice = voices[23] || voices[0];
-		// Eddy // Flo
+		const voice = voices[voiceIndex];
+
 		if (voice) {
 			utterance.voice = voice;
 			console.log("Selected voice:", utterance.voice);
 		}
 		synth.speak(utterance);
+		// synth.cancel();
 	};
 
 	if (window.speechSynthesis.getVoices().length > 0) {
@@ -41,15 +41,21 @@ const speakText = (text) => {
 };
 
 export default function GeneratedPodcastPreview({ generatedContent }) {
-	console.log("generatedContent first --->>>>> ", generatedContent);
-
 	const handlePlayPodcast = (event) => {
 		event.preventDefault();
-		// const textToSpeak = generatedContent
-		// 	.map((entry) => (entry.text ? entry.text : ""))
-		// 	.join(" ");
+		const validEntries = generatedContent.filter(
+			(entry) => entry.speaker && entry.speaker.trim() !== ""
+		);
 
-		speakText("cool never mind not cool");
+		validEntries.forEach((entry, index) => {
+			const voiceIndex = index % 2 === 0 ? 23 : 38;
+			setTimeout(() => {
+				console.log(
+					`Speaking: "${entry.text}" with voice index: ${voiceIndex}`
+				);
+				speakText(entry.text, voiceIndex);
+			}, index * 2000);
+		});
 	};
 
 	return (
