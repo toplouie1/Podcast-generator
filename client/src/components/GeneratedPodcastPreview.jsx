@@ -15,9 +15,9 @@ const speakText = (text, voiceIndex) => {
 		return;
 	}
 
-	utterance.pitch = 1.2;
-	utterance.rate = 1.2;
-	utterance.volume = 1.3;
+	utterance.pitch = 1.1;
+	utterance.rate = 1.1;
+	utterance.volume = 1.2;
 
 	const setVoice = () => {
 		const voices = synth.getVoices();
@@ -61,7 +61,7 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 		},
 		{
 			speaker: "Speaker 2:",
-			text: "Hhahahah joe be quiet , you are to energetic , lets calm down",
+			text: "Hhahahah joe be quiet , you are to energetic , lets calm dow",
 		},
 	];
 

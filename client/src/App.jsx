@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import PodcastGenerator from "./components/PodcastGenerator";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import "./css/App.css";
 
 export default function App() {
@@ -25,7 +27,7 @@ export default function App() {
 	return (
 		<div className={`app-container ${isDarkMode ? "dark-mode" : ""}`}>
 			<button className="theme-toggle" onClick={toggleTheme}>
-				{isDarkMode ? "🌙" : "🌞"}
+				{isDarkMode ? <ToggleOffIcon /> : <ToggleOnIcon />}
 			</button>
 			<PodcastGenerator />
 		</div>
