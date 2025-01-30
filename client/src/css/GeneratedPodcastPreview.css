@@ -17,6 +17,7 @@
 .transcript-container {
 	font-family: Arial, sans-serif;
 	line-height: 1.4;
+	margin-top: 20px;
 }
 
 .transcript-entry {
@@ -37,7 +38,6 @@ body.dark .speaker-label {
 
 .speaker-text {
 	flex-grow: 1;
-	margin-top: 5px;
 }
 
 .generated-content {

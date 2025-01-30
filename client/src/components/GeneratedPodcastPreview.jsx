@@ -15,10 +15,6 @@ const speakText = (text, voiceIndex) => {
 		return;
 	}
 
-	utterance.pitch = 1.1;
-	utterance.rate = 1.1;
-	utterance.volume = 1.2;
-
 	const setVoice = () => {
 		const voices = synth.getVoices();
 		const voice = voices[voiceIndex];
@@ -88,9 +84,11 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 			<div className="generated-content">
 				<div className="generated-header">
 					<h2>Podcast Generated</h2>
-					<PlayCircleOutlineIcon onClick={handlePlayPodcast} />
-					<PlayArrowSharpIcon onClick={handleResumePodcast} />
-					<PauseSharpIcon onClick={() => handlePausePodcast()} />
+					<div>
+						<PlayCircleOutlineIcon onClick={handlePlayPodcast} />
+						<PlayArrowSharpIcon onClick={handleResumePodcast} />
+						<PauseSharpIcon onClick={() => handlePausePodcast()} />
+					</div>
 				</div>
 				<div className="transcript-container">
 					{generatedContent.map((entry, index) => {

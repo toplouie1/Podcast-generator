@@ -5,37 +5,48 @@ import "../css/TranscriptAndAudioForm.css";
 export default function TranscriptAndAudioForm({ setGeneratedContent }) {
 	const [file, setFile] = useState(null);
 	const [uploadStatus, setUploadStatus] = useState("");
+	const [transcriptText, setTranscriptText] = useState("");
 
 	const handleFileChange = (e) => {
 		setFile(e.target.files[0]);
 	};
 
 	const handleGenerate = async () => {
-		if (!file) {
-			setUploadStatus("Please select an audio file.");
-			return;
-		}
+		if (file) {
+			const formData = new FormData();
+			formData.append("audio", file);
 
-		const formData = new FormData();
-		formData.append("audio", file);
-
-		try {
-			const response = await axios.post(
-				"http://localhost:8000/api/upload-audio",
-				formData,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
-			setGeneratedContent(response.data.generatedContent);
-
-			setUploadStatus(`File uploaded successfully: ${response.data.message}`);
-		} catch (error) {
-			setUploadStatus(
-				`Error: ${error.response ? error.response.data : error.message}`
-			);
+			try {
+				const response = await axios.post(
+					"http://localhost:8000/api/upload-audio",
+					formData,
+					{
+						headers: { "Content-Type": "multipart/form-data" },
+					}
+				);
+				setGeneratedContent(response.data.generatedContent);
+				setUploadStatus(`File uploaded successfully: ${response.data.message}`);
+			} catch (error) {
+				setUploadStatus(
+					`Error: ${error.response ? error.response.data : error.message}`
+				);
+			}
+		} else if (transcriptText) {
+			console.log("checking for transcript", transcriptText);
+			try {
+				const response = await axios.post(
+					"http://localhost:8000/api/podcast-transcript",
+					{ text: transcriptText }
+				);
+				setGeneratedContent(response.data.podcastScript);
+				setUploadStatus("Podcast transcript generated successfully!");
+			} catch (error) {
+				setUploadStatus(
+					`Error: ${error.response ? error.response.data : error.message}`
+				);
+			}
+		} else {
+			setUploadStatus("Please upload an audio file or enter a transcript.");
 		}
 	};
 
@@ -55,14 +66,17 @@ export default function TranscriptAndAudioForm({ setGeneratedContent }) {
 				<textarea
 					id="transcript"
 					className="form-control transcript-input"
-					rows="5"
+					rows="10"
 					placeholder="Enter transcript here"
+					value={transcriptText}
+					onChange={(e) => setTranscriptText(e.target.value)}
 				></textarea>
 			</div>
 
 			<button className="generate-button" onClick={handleGenerate}>
 				GENERATE
 			</button>
+
 			{uploadStatus && <p className="upload-status">{uploadStatus}</p>}
 		</div>
 	);
