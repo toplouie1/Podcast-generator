@@ -79,10 +79,6 @@ const processAudioWithGemini = async (filePath, originalname, mimeType) => {
 				},
 			},
 		]);
-		console.log("--- result ---- ", result);
-
-		console.log("unfiltered result", result.response.text());
-
 		const formattedTranscript = formatTranscript(result.response.text());
 		return formattedTranscript;
 	} catch (error) {

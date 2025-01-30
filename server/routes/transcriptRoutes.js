@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const express = require("express");
 const router = express.Router();
+const { formatTranscript } = require("../helperMethods/formatTranscript");
 require("dotenv").config();
 
 const API_KEY = process.env.API_KEY;
@@ -16,7 +17,6 @@ const model = genAI.getGenerativeModel({
 	`,
 });
 
-// Route to process the podcast transcript
 router.post("/podcast-transcript", async (req, res) => {
 	const { text } = req.body;
 	if (!text) {
@@ -36,11 +36,10 @@ router.post("/podcast-transcript", async (req, res) => {
 		`;
 
 		const result = await model.generateContent(prompt);
-		const podcastScript = result.response.text();
-
+		const generatedContent = formatTranscript(result.response.text());
 		res.json({
 			message: "Podcast text script updated successfully",
-			podcastScript,
+			generatedContent,
 		});
 	} catch (error) {
 		res.status(500).json({ error: error.message });

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import "../css/TranscriptAndAudioForm.css";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function TranscriptAndAudioForm({ setGeneratedContent }) {
 	const [file, setFile] = useState(null);
@@ -18,7 +19,7 @@ export default function TranscriptAndAudioForm({ setGeneratedContent }) {
 
 			try {
 				const response = await axios.post(
-					"http://localhost:8000/api/upload-audio",
+					`${API_URL}/api/upload-audio`,
 					formData,
 					{
 						headers: { "Content-Type": "multipart/form-data" },
@@ -34,10 +35,9 @@ export default function TranscriptAndAudioForm({ setGeneratedContent }) {
 		} else if (transcriptText) {
 			console.log("checking for transcript", transcriptText);
 			try {
-				const response = await axios.post(
-					"http://localhost:8000/api/podcast-transcript",
-					{ text: transcriptText }
-				);
+				const response = await axios.post(`${API_URL}/api/podcast-transcript`, {
+					text: transcriptText,
+				});
 				setGeneratedContent(response.data.podcastScript);
 				setUploadStatus("Podcast transcript generated successfully!");
 			} catch (error) {

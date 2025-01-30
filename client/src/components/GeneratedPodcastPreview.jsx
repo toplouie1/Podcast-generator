@@ -39,43 +39,20 @@ const speakText = (text, voiceIndex) => {
 	};
 };
 
-const handlePausePodcast = () => {
-	synth.pause();
-	console.log("Speech paused");
-};
-
-const handleResumePodcast = () => {
-	synth.resume();
-	console.log("Speech resumed");
-};
-
 export default function GeneratedPodcastPreview({ generatedContent }) {
-	generatedContent = [
-		{
-			speaker: "Speaker 1:",
-			text: "Hey good mornin this is joe",
-		},
-		{
-			speaker: "Speaker 2:",
-			text: "Hhahahah joe be quiet , you are to energetic , lets calm dow",
-		},
-	];
-
 	const handlePlayPodcast = (event) => {
 		event.preventDefault();
 		const validEntries = generatedContent.filter(
 			(entry) => entry.speaker && entry.speaker.trim() !== ""
 		);
-		console.log("Valid entries to speak:", validEntries);
-
 		validEntries.forEach((entry, index) => {
-			const voiceIndex = index % 2 === 0 ? 23 : 38;
+			const voiceIndex = index % 2 === 0 ? 1 : 114;
 			setTimeout(() => {
 				console.log(
 					`Speaking: "${entry.text}" with voice index: ${voiceIndex}`
 				);
 				speakText(entry.text, voiceIndex);
-			}, index * 2000);
+			}, index * 1000);
 		});
 	};
 
@@ -86,8 +63,8 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 					<h2>Podcast Generated</h2>
 					<div>
 						<PlayCircleOutlineIcon onClick={handlePlayPodcast} />
-						<PlayArrowSharpIcon onClick={handleResumePodcast} />
-						<PauseSharpIcon onClick={() => handlePausePodcast()} />
+						<PauseSharpIcon onClick={() => synth.pause()} />
+						<PlayArrowSharpIcon onClick={() => synth.resume()} />
 					</div>
 				</div>
 				<div className="transcript-container">

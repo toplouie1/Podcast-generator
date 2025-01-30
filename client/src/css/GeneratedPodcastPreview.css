@@ -22,13 +22,12 @@
 
 .transcript-entry {
 	display: flex;
-	margin-bottom: 11px;
+	margin-bottom: 6px;
 }
 
 .speaker-label {
 	font-weight: bold;
 	min-width: 100px;
-	margin-right: 20px;
 	color: #4a148c;
 }
 
@@ -38,6 +37,8 @@ body.dark .speaker-label {
 
 .speaker-text {
 	flex-grow: 1;
+	font-size: 0.9em;
+	font-style: normal;
 }
 
 .generated-content {
@@ -48,7 +49,6 @@ body.dark .speaker-label {
 	min-height: 550px;
 	align-items: center;
 	color: #1b1120;
-	font-style: italic;
 }
 body.dark .generated-content {
 	background: #424242;
