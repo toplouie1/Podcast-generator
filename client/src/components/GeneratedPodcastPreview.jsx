@@ -20,41 +20,49 @@ const loadVoices = () => {
 	});
 };
 
-const speakSequentially = async (entries) => {
-	for (let index = 0; index < entries.length; index++) {
-		const entry = entries[index];
-		const voiceIndex = index % 2 === 0 ? 1 : 114;
-
-		console.log(`Speaking: "${entry.text}" with voice index: ${voiceIndex}`);
-
-		await new Promise((resolve) => {
-			const utterance = new SpeechSynthesisUtterance(entry.text);
-			currentUtterance = utterance;
-
-			loadVoices().then((voices) => {
-				utterance.voice = voices[voiceIndex] || voices[0];
-				synth.speak(utterance);
-			});
-
-			utterance.onend = () => {
-				console.log("Finished speaking:", entry.text);
-				resolve();
-			};
-
-			utterance.onerror = (event) => {
-				console.error("Speech synthesis error:", event);
-				resolve();
-			};
-		});
-
-		if (isPaused) return;
-	}
-};
-
 export default function GeneratedPodcastPreview({ generatedContent }) {
 	const [hasStarted, setHasStarted] = useState(false);
+	const [activeIndex, setActiveIndex] = useState(null);
 
-	const handlePlayPodcast = async (event, generatedContent) => {
+	const speakSequentially = async (entries) => {
+		for (let index = 0; index < entries.length; index++) {
+			if (isPaused) return;
+
+			const entry = entries[index];
+			const voiceIndex = index % 2 === 0 ? 1 : 114;
+			setActiveIndex(index + 1);
+
+			console.log(`Speaking: "${entry.text}" with voice index: ${voiceIndex}`);
+
+			await new Promise((resolve) => {
+				const utterance = new SpeechSynthesisUtterance(entry.text);
+				currentUtterance = utterance;
+
+				loadVoices().then((voices) => {
+					utterance.voice = voices[voiceIndex] || voices[0];
+					synth.speak(utterance);
+				});
+
+				utterance.onstart = () => {
+					console.log("Speech started:", entry.text);
+				};
+
+				utterance.onend = () => {
+					console.log("Finished speaking:", entry.text);
+					resolve();
+				};
+
+				utterance.onerror = (event) => {
+					console.error("Speech synthesis error:", event);
+					resolve();
+				};
+			});
+
+			await new Promise((resolve) => setTimeout(resolve, 500));
+		}
+	};
+
+	const handlePlayPodcast = async (event) => {
 		event.preventDefault();
 
 		if (synth.speaking) {
@@ -90,8 +98,12 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 	const handleRestart = (event) => {
 		event.preventDefault();
 		synth.cancel();
+		isPaused = false;
 		setHasStarted(false);
-		handlePlayPodcast(event, generatedContent);
+		setActiveIndex(null);
+		setTimeout(() => {
+			handlePlayPodcast(event);
+		}, 300);
 	};
 
 	return (
@@ -102,7 +114,7 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 					<PlayCircleOutlineIcon
 						className="play-icon"
 						data-tooltip="Play"
-						onClick={(event) => handlePlayPodcast(event, generatedContent)}
+						onClick={handlePlayPodcast}
 					/>
 					{hasStarted && (
 						<>
@@ -128,7 +140,12 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 					{generatedContent.map((entry, index) => {
 						if (!entry.speaker || !entry.text) return null;
 						return (
-							<div key={index} className="transcript-entry">
+							<div
+								key={index}
+								className={`transcript-entry ${
+									index === activeIndex ? "active" : ""
+								}`}
+							>
 								<div className="speaker-label">{entry.speaker}</div>
 								<div className="speaker-text">{entry.text}</div>
 							</div>

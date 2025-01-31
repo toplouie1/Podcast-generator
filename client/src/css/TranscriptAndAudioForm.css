@@ -106,11 +106,3 @@ body.dark .generate-button {
 	background: linear-gradient(135deg, #4a148c, #6a1b9a);
 	color: #ffeb3b;
 }
-
-.upload-status {
-	color: #4a148c;
-}
-
-body.dark .upload-status {
-	color: #ff7043;
-}

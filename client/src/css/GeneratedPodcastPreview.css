@@ -23,6 +23,13 @@
 .transcript-entry {
 	display: flex;
 	margin-bottom: 6px;
+	transition: background-color 0.3s ease;
+	padding: 5px;
+}
+
+.transcript-entry.active {
+	background-color: rgba(200, 200, 200, 0.5);
+	font-weight: bold;
 }
 
 .speaker-label {
