@@ -55,3 +55,51 @@ body.dark .generated-content {
 	color: #f3e5f5;
 	border-color: #9e9e9e;
 }
+
+/* Icons */
+
+.generated-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.generated-header svg {
+	cursor: pointer;
+	font-size: 24px;
+	color: gray;
+	transition: transform 0.2s ease, color 0.2s ease;
+	position: relative;
+}
+
+.generated-header svg:hover {
+	transform: scale(1.1);
+	color: #666;
+}
+
+.generated-header svg.active {
+	color: orange;
+	transform: scale(1.2);
+}
+
+.generated-header svg::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: -24px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	padding: 4px 6px;
+	border-radius: 4px;
+	font-size: 10px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.generated-header svg:hover::after {
+	opacity: 1;
+	visibility: visible;
+}
