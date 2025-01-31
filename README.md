@@ -15,10 +15,6 @@ The **Podcast Generator** is a user-friendly tool designed to transform audio fi
 
 ---
 
-## Screenshots
-
-Here are some screenshots of the Podcast Generator in action:
-
 | ![Screenshot 1](https://github.com/user-attachments/assets/9bfddaed-b4db-4b02-8d08-dba956a9f001) | ![Screenshot 2](https://github.com/user-attachments/assets/6d4cb61a-942e-419f-9738-d585862eccc1) |
 |:--:|:--:|
 | *Upload your audio or text transcript* | *Generate and review your podcast script* |
@@ -28,6 +24,7 @@ Here are some screenshots of the Podcast Generator in action:
 
 ## Technologies Used
 
-- **Frontend**: React, Material-UI
+- **Frontend**: Javascript, React, Material-UI
 - **Backend**: Node.js, Express.js
 - **File Handling**: Multer
+- **Services**: Gemini API , Web Speech API 
