@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "../css/GeneratedPodcastPreview.css";
 import PlayArrowSharpIcon from "@mui/icons-material/PlayArrowSharp";
 import PauseSharpIcon from "@mui/icons-material/PauseSharp";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
-let synth = window.speechSynthesis;
-let currentUtterance = null;
-let isPaused = false;
+const synth = window.speechSynthesis;
 
 const loadVoices = () => {
 	return new Promise((resolve) => {
@@ -24,9 +22,14 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 	const [hasStarted, setHasStarted] = useState(false);
 	const [activeIndex, setActiveIndex] = useState(null);
 
+	const isPausedRef = useRef(false);
+	const currentUtteranceRef = useRef(null);
+
 	const speakSequentially = async (entries) => {
 		for (let index = 0; index < entries.length; index++) {
-			if (isPaused) return;
+			while (isPausedRef.current) {
+				await new Promise((resolve) => setTimeout(resolve, 100));
+			}
 
 			const entry = entries[index];
 			const voiceIndex = index % 2 === 0 ? 1 : 114;
@@ -36,7 +39,7 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 
 			await new Promise((resolve) => {
 				const utterance = new SpeechSynthesisUtterance(entry.text);
-				currentUtterance = utterance;
+				currentUtteranceRef.current = utterance;
 
 				loadVoices().then((voices) => {
 					utterance.voice = voices[voiceIndex] || voices[0];
@@ -58,7 +61,7 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 				};
 			});
 
-			await new Promise((resolve) => setTimeout(resolve, 500));
+			await new Promise((resolve) => setTimeout(resolve, 300));
 		}
 	};
 
@@ -74,7 +77,7 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 			(entry) => entry.speaker && entry.speaker.trim() !== ""
 		);
 
-		isPaused = false;
+		isPausedRef.current = false;
 		setHasStarted(true);
 		await speakSequentially(validEntries);
 	};
@@ -82,7 +85,7 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 	const handlePause = () => {
 		if (synth.speaking && !synth.paused) {
 			synth.pause();
-			isPaused = true;
+			isPausedRef.current = true;
 			console.log("Speech paused.");
 		}
 	};
@@ -90,15 +93,15 @@ export default function GeneratedPodcastPreview({ generatedContent }) {
 	const handleResume = () => {
 		if (synth.paused) {
 			synth.resume();
-			isPaused = false;
+
+			isPausedRef.current = false;
 			console.log("Speech resumed.");
 		}
 	};
 
 	const handleRestart = (event) => {
-		event.preventDefault();
 		synth.cancel();
-		isPaused = false;
+		isPausedRef.current = false;
 		setHasStarted(false);
 		setActiveIndex(null);
 		setTimeout(() => {
