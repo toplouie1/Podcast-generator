@@ -6,8 +6,14 @@ const app = express();
 
 require("dotenv").config();
 
+const compression = require("compression");
+app.use(compression());
+
 app.use(express.json());
 app.use(cors());
+
+const responseTime = require("response-time");
+app.use(responseTime());
 
 app.use("/api", audioRoutes);
 app.use("/api", transcriptRoutes);
